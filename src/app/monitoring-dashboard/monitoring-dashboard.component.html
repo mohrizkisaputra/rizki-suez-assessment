@@ -1,5 +1,6 @@
-<p>monitoring-dashboard works!</p>
 
-<lib-tire-pressure-widget></lib-tire-pressure-widget>
-
-<lib-speed-widget></lib-speed-widget>
+<google-map height="700px" width="100%" 
+  [center]="center" 
+  [zoom]="zoom">
+  <map-marker [position]="center"></map-marker>
+</google-map>
