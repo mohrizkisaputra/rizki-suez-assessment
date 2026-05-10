@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeightWidget } from './weight-widget';
+import { WeightWidgetComponent } from './weight-widget.component';
 
-describe('WeightWidget', () => {
-  let component: WeightWidget;
-  let fixture: ComponentFixture<WeightWidget>;
+describe('WeightWidgetComponent', () => {
+  let component: WeightWidgetComponent;
+  let fixture: ComponentFixture<WeightWidgetComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WeightWidget]
+      imports: [WeightWidgetComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WeightWidget);
+    fixture = TestBed.createComponent(WeightWidgetComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

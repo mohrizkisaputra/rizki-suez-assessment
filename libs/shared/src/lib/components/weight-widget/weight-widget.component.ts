@@ -6,10 +6,10 @@ import { WeightDetailModel } from '../../models/weight-detail.model';
   selector: 'lib-weight-widget',
   imports: [ CardModule ],
   standalone: true,
-  templateUrl: './weight-widget.html',
-  styleUrl: './weight-widget.css',
+  templateUrl: './weight-widget.component.html',
+  styleUrl: './weight-widget.component.css',
 })
-export class WeightWidget {
+export class WeightWidgetComponent {
   @Input() data: WeightDetailModel | undefined;
 
 }

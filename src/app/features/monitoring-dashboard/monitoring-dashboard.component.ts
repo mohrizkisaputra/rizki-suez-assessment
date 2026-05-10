@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common'
 import { GoogleMapsModule, MapDirectionsService  } from '@angular/google-maps';
 import { CardModule } from 'primeng/card';
@@ -6,12 +6,16 @@ import { SplitterModule } from 'primeng/splitter';
 import { DividerModule } from 'primeng/divider';
 import { Observable, map } from 'rxjs';
 import { 
-  AirDensityWidget,
-  AvgThrottleWidget,
+  AirDensityWidgetComponent,
+  AvgThrottleWidgetComponent,
   SpeedWidgetComponent,
   TirePressureWidgetComponent,
-  WeightWidget,
-  WeightDetailModel
+  WeightWidgetComponent,
+
+  WeightDetailModel,
+  SnapshotDataModel,
+
+  OrchestratorServices
 } from '@shared';
 import { MonitoringDashboardServices } from './services/monitoring-dashboard.services';
 import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail.model';
@@ -24,18 +28,18 @@ import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail
     CardModule, 
     SplitterModule,
     DividerModule,
-    AirDensityWidget,
-    AvgThrottleWidget,
+    AirDensityWidgetComponent,
+    AvgThrottleWidgetComponent,
     SpeedWidgetComponent,
     TirePressureWidgetComponent,
-    WeightWidget,
+    WeightWidgetComponent,
     AsyncPipe,
     CommonModule
   ],
   templateUrl: './monitoring-dashboard.component.html',
   styleUrl: './monitoring-dashboard.component.css'
 })
-export class MonitoringDashboardComponent implements OnInit {
+export class MonitoringDashboardComponent implements OnInit, OnDestroy {
 
   googleMapsLoad = false;
   center: google.maps.LatLngLiteral = { lat: -6.2088, lng: 106.8456 }; 
@@ -59,9 +63,11 @@ export class MonitoringDashboardComponent implements OnInit {
   motorCycleDetailInfo: MotorCycleDetailInfoModel | undefined;
   weightDetailsInfo: WeightDetailModel | undefined;
 
-  constructor(private services: MonitoringDashboardServices) {
+  snapshot: SnapshotDataModel | null = null;
 
-  }
+  constructor(
+    private services: MonitoringDashboardServices, 
+    private orchServices: OrchestratorServices) {}
 
   async ngOnInit() {
     try {
@@ -73,11 +79,18 @@ export class MonitoringDashboardComponent implements OnInit {
       this.weightDetailsInfo = weightData.Payload;
       if (this.routeSample) this.initMapsRoutes();
 
-      
+      await this.orchServices.initialize();
+      this.orchServices.start(response => {
+        this.snapshot = response;
+      });
     } catch (err) {
       console.log(err)
     }
 
+  }
+
+  ngOnDestroy() {
+    this.orchServices.stop();
   }
 
   private async initMapsRoutes() {
