@@ -43,5 +43,6 @@ testem.log
 Thumbs.db
 
 # Special Treatment
+.package-lock.json
 .env
 
