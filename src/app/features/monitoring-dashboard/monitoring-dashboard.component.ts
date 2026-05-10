@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AsyncPipe } from '@angular/common'
+import { AsyncPipe, CommonModule } from '@angular/common'
 import { GoogleMapsModule, MapDirectionsService  } from '@angular/google-maps';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { DividerModule } from 'primeng/divider';
+import { Observable, map } from 'rxjs';
 import { 
   AirDensityWidget,
   AvgThrottleWidget,
@@ -13,8 +14,7 @@ import {
 
 } from '@shared';
 import { MonitoringDashboardServices } from './services/monitoring-dashboard.services';
-import { Observable, map } from 'rxjs';
-
+import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail.model';
 
 @Component({
   selector: 'app-monitoring-dashboard',
@@ -29,12 +29,15 @@ import { Observable, map } from 'rxjs';
     SpeedWidgetComponent,
     TirePressureWidgetComponent,
     WeightWidget,
-    AsyncPipe
+    AsyncPipe,
+    CommonModule
   ],
   templateUrl: './monitoring-dashboard.component.html',
   styleUrl: './monitoring-dashboard.component.css'
 })
 export class MonitoringDashboardComponent implements OnInit {
+
+  googleMapsLoad = false;
   center: google.maps.LatLngLiteral = { lat: -6.2088, lng: 106.8456 }; 
   zoom = 12;
   
@@ -45,7 +48,7 @@ export class MonitoringDashboardComponent implements OnInit {
     suppressPolylines: false,
     preserveViewport: false,
     polylineOptions: {
-      strokeColor: '#a30000',
+      strokeColor: '#0026a3',
       strokeOpacity: 1.0,
       strokeWeight: 5,
       icons: [] 
@@ -53,12 +56,18 @@ export class MonitoringDashboardComponent implements OnInit {
   };
   
   routeSample: any;
+  motorCycleDetailInfo: MotorCycleDetailInfoModel | undefined;
 
-  constructor(private services: MonitoringDashboardServices) {}
+  constructor(private services: MonitoringDashboardServices) {
+
+  }
 
   async ngOnInit() {
     try {
       this.routeSample = await this.services.getSampleRoute();
+      const motorcycleData = await this.services.getMotorcycleDetailInfo();
+      this.motorCycleDetailInfo = motorcycleData.Payload;
+      console.log('this.motorCycleDetailInfo', this.motorCycleDetailInfo);
       if (this.routeSample) this.initMapsRoutes();
     } catch (err) {
       console.log(err)
@@ -69,14 +78,25 @@ export class MonitoringDashboardComponent implements OnInit {
   private async initMapsRoutes() {
     const routeSampleValue = this.routeSample?.Payload;
     const body: google.maps.DirectionsRequest = {
-      origin: { lat: routeSampleValue.StartingPoint.lat, lng: routeSampleValue.StartingPoint.long },
-      destination: { lat: routeSampleValue.DestinationPoint.lat, lng: routeSampleValue.DestinationPoint.long },
-      travelMode: google.maps.TravelMode.TWO_WHEELER
+      origin: { 
+        lat: routeSampleValue.StartingPoint.lat, 
+        lng: routeSampleValue.StartingPoint.long 
+      },
+      destination: { 
+        lat: routeSampleValue.DestinationPoint.lat, 
+        lng: routeSampleValue.DestinationPoint.long 
+      },
+      travelMode: google.maps.TravelMode.DRIVING,
+      drivingOptions: {
+        departureTime: new Date(),
+        trafficModel: google.maps.TrafficModel.BEST_GUESS
+      },
+      provideRouteAlternatives: true
     };
 
     this.directionsResults$ = await this.mapDirectionsServices.route(body).pipe(map(res => res.result));
-    const estDistance = await this.getEstDistance();
-    this.distanceInKm = (estDistance ?? 0) / 1000;
+    this.distanceInKm = (await this.getEstDistance() ?? 0) / 1000;
+    console.log('this.distanceInKm', this.distanceInKm);
   }
 
   private async getEstDistance() {
@@ -100,8 +120,7 @@ export class MonitoringDashboardComponent implements OnInit {
 
     try {
       const response = await RouteMatrix.computeRouteMatrix(request);
-      const distanceInM = response.matrix.rows[0].items[0].distanceMeters;
-      return distanceInM;
+      return response.matrix.rows[0].items[0].distanceMeters;
     } catch (e) {
       console.error("Gagal menghitung jarak:", e);
       return 0
