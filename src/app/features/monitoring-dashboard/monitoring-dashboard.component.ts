@@ -10,12 +10,11 @@ import {
   AvgThrottleWidget,
   SpeedWidgetComponent,
   TirePressureWidgetComponent,
-  WeightWidget 
-
+  WeightWidget,
+  WeightDetailModel
 } from '@shared';
 import { MonitoringDashboardServices } from './services/monitoring-dashboard.services';
 import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail.model';
-import { WeightDetailModel } from '../../domain/models/weight-detail.model';
 
 @Component({
   selector: 'app-monitoring-dashboard',
@@ -72,8 +71,9 @@ export class MonitoringDashboardComponent implements OnInit {
 
       this.motorCycleDetailInfo = motorcycleData.Payload;
       this.weightDetailsInfo = weightData.Payload;
-      console.log('this.motorCycleDetailInfo', this.motorCycleDetailInfo);
       if (this.routeSample) this.initMapsRoutes();
+
+      
     } catch (err) {
       console.log(err)
     }

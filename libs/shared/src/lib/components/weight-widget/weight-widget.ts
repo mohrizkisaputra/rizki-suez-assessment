@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CardModule } from 'primeng/card';
-
-export interface WeightDetailModel {
-    person: number,
-    totalPersonKg: number,
-    cargoKg: number
-}
+import { WeightDetailModel } from '../../models/weight-detail.model';
 
 @Component({
   selector: 'lib-weight-widget',
