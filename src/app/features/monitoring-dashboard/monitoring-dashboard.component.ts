@@ -15,6 +15,7 @@ import {
 } from '@shared';
 import { MonitoringDashboardServices } from './services/monitoring-dashboard.services';
 import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail.model';
+import { WeightDetailModel } from '../../domain/models/weight-detail.model';
 
 @Component({
   selector: 'app-monitoring-dashboard',
@@ -57,6 +58,7 @@ export class MonitoringDashboardComponent implements OnInit {
   
   routeSample: any;
   motorCycleDetailInfo: MotorCycleDetailInfoModel | undefined;
+  weightDetailsInfo: WeightDetailModel | undefined;
 
   constructor(private services: MonitoringDashboardServices) {
 
@@ -66,7 +68,10 @@ export class MonitoringDashboardComponent implements OnInit {
     try {
       this.routeSample = await this.services.getSampleRoute();
       const motorcycleData = await this.services.getMotorcycleDetailInfo();
+      const weightData = await this.services.getWheightDetailInfo();
+
       this.motorCycleDetailInfo = motorcycleData.Payload;
+      this.weightDetailsInfo = weightData.Payload;
       console.log('this.motorCycleDetailInfo', this.motorCycleDetailInfo);
       if (this.routeSample) this.initMapsRoutes();
     } catch (err) {

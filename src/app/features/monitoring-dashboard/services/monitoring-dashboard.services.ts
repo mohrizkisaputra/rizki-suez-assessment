@@ -17,4 +17,9 @@ export class MonitoringDashboardServices {
         const response = this.http.get('data/motorcycleData.json');
         return await firstValueFrom(response);
     }
+
+    async getWheightDetailInfo(): Promise<any> {
+        const response = this.http.get('data/weightData.json');
+        return await firstValueFrom(response);
+    }
 }

@@ -1,1 +1,14 @@
-<p>weight-widget works!</p>
+<p-card class="p-2 h-10rem">
+    <div class="grid">
+        <div class="col flex justify-content-left align-items-center">
+            <img src="person/{{data?.person}}-person.svg" class="w-8rem" alt="Fuel Capacity"/>
+        </div>
+        <div class="col flex justify-content-left align-items-center">
+            <div>
+                <div>Total Person {{data?.person}}</div>
+                <div>Person Weight {{data?.totalPersonKg}}</div>
+                <div>Laguage Weight {{data?.cargoKg}}</div>
+            </div>
+        </div>
+    </div>
+</p-card>

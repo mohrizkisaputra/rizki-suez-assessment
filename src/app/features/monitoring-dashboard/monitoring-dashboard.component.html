@@ -1,11 +1,11 @@
 
 
-<div class="grid">
-    <div class="col">
-        <p-card>
-            <div class="grid">
-                <div class="col flex justify-content-center align-items-center">
-                    <img src="motor-scooter-svgrepo-com.svg" alt="Motorcycle Type" style="height: 140px;"/>
+<div class="grid ">
+    <div class="col" >
+        <p-card class="">
+            <div class="grid ">
+                <div class="col flex justify-content-left align-items-center">
+                    <img src="motor-scooter-svgrepo-com.svg" class="w-8rem" alt="Motorcycle Type"/>
                 </div>
                 <div class="col flex justify-content-left align-items-center">
                     Type 
@@ -16,10 +16,10 @@
         </p-card>
     </div>
     <div class="col">
-        <p-card>
-            <div class="grid">
-                <div class="col flex justify-content-center align-items-center">
-                    <img src="fuel-svgrepo-com.svg" alt="Fuel Capacity" style="height: 140px;"/>
+        <p-card class="">
+            <div class="grid ">
+                <div class="col flex justify-content-left align-items-center">
+                    <img src="fuel-svgrepo-com.svg" class="w-8rem" alt="Fuel Capacity"/>
                 </div>
                 <div class="col flex justify-content-left align-items-center">
                     Fuel Capacity
@@ -31,10 +31,10 @@
         </p-card>
     </div>
     <div class="col">
-        <p-card>
-            <div class="grid">
-                <div class="col flex justify-content-center align-items-center">
-                    <img src="brand/{{motorCycleDetailInfo?.brand?.toLocaleLowerCase()}}.svg" alt="Fuel Capacity" style="height: 140px;"/>
+        <p-card class="">
+            <div class="grid ">
+                <div class="col flex justify-content-left align-items-center">
+                    <img src="brand/{{motorCycleDetailInfo?.brand?.toLocaleLowerCase()}}.svg" class="w-8rem" alt="Fuel Capacity"/>
                 </div>
                 <div class="col flex justify-content-left align-items-center">
                     {{motorCycleDetailInfo?.brand}}
@@ -48,7 +48,7 @@
 <p-divider />
 <div class="grid">
     <div class="col">
-        <lib-air-density-widget class="flex items-center justify-center h-1/6">Panel 1</lib-air-density-widget>
+        <lib-air-density-widget class="flex items-center justify-center h-1/6"></lib-air-density-widget>
     </div>
     <div class="col">
         <lib-avg-throttle-widget class="flex items-center justify-center h-1/6">Panel 2</lib-avg-throttle-widget>
@@ -59,8 +59,8 @@
     <div class="col">
         <lib-tire-pressure-widget class="flex items-center justify-center h-1/6">Panel 3</lib-tire-pressure-widget>
     </div>
-    <div class="col">
-        <lib-weight-widget class="flex items-center justify-center h-1/6">Panel 3</lib-weight-widget>
+    <div class="col ">
+        <lib-weight-widget class="flex items-center justify-center h-1/6" [data]="weightDetailsInfo">Panel 3</lib-weight-widget>
     </div>
 </div>
 <p-divider />
