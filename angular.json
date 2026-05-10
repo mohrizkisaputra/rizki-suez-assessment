@@ -24,6 +24,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "*", 
+                "input": "libs/shared/src/lib/data",
+                "output": "data"
               }
             ],
             "styles": [

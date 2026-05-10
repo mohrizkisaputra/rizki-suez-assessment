@@ -1,0 +1,38 @@
+<p-splitter class="h-1">
+    <ng-template pTemplate>
+        <p-card>
+            <lib-air-density-widget class="flex items-center justify-center h-1/6">Panel 1</lib-air-density-widget>
+        </p-card>
+    </ng-template>
+    <ng-template pTemplate>
+        <p-card>
+            <lib-avg-throttle-widget class="flex items-center justify-center h-1/6">Panel 2</lib-avg-throttle-widget>
+        </p-card>
+    </ng-template>
+    <ng-template pTemplate>
+        <p-card>
+            <lib-speed-widget class="flex items-center justify-center h-1/6">Panel 3</lib-speed-widget>
+        </p-card>
+    </ng-template>
+    <ng-template pTemplate>
+        <p-card>
+            <lib-tire-pressure-widget class="flex items-center justify-center h-1/6">Panel 3</lib-tire-pressure-widget>
+        </p-card>
+    </ng-template>
+    <ng-template pTemplate>
+        <p-card>
+            <lib-weight-widget class="flex items-center justify-center h-1/6">Panel 3</lib-weight-widget>
+        </p-card>
+    </ng-template>
+</p-splitter>
+<p-divider />
+
+<p-card>
+  <google-map height="500px" width="70%" 
+    [center]="center" 
+    [zoom]="zoom">
+     @if (directionsResults$ | async; as directionsResults) {
+        <map-directions-renderer [directions]="directionsResults" [options]="directionsOptions"></map-directions-renderer>
+    }
+  </google-map>
+</p-card>

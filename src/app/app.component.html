@@ -1,20 +1,4 @@
 <lib-app-header></lib-app-header>
-<p-splitter [style]="{ height: '300px' }" styleClass="mb-8">
-    <ng-template pTemplate>
-        <p-card>
-            <div class="flex items-center justify-center h-1/6">Panel 1</div>
-        </p-card>
-    </ng-template>
-    <ng-template pTemplate>
-        <p-card>
-            <div class="flex items-center justify-center h-1/6">Panel 2</div>
-        </p-card>
-    </ng-template>
-    <ng-template pTemplate>
-        <p-card>
-            <div class="flex items-center justify-center h-1/6">Panel 3</div>
-        </p-card>
-    </ng-template>
-</p-splitter>
-<p-divider />
-<app-monitoring-dashboard></app-monitoring-dashboard>
+<main>
+    <router-outlet></router-outlet>
+</main>

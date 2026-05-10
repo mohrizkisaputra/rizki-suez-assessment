@@ -4,9 +4,6 @@ import { AppHeader } from '@shared'
 import { DividerModule } from 'primeng/divider';
 import { SplitterModule } from 'primeng/splitter';
 import { CardModule } from 'primeng/card';
-import { MonitoringDashboardComponent } from './monitoring-dashboard/monitoring-dashboard.component';
-import { TirePressureWidgetComponent, SpeedWidgetComponent } from '@shared';
-
 
 @Component({
   selector: 'app-root',
@@ -16,12 +13,9 @@ import { TirePressureWidgetComponent, SpeedWidgetComponent } from '@shared';
   imports: [ 
     RouterOutlet, 
     AppHeader,
-    MonitoringDashboardComponent,
-    TirePressureWidgetComponent,
-    SpeedWidgetComponent,
     DividerModule,
     SplitterModule,
-    CardModule
+    CardModule,
   ],
 })
 export class AppComponent {
