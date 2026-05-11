@@ -1,0 +1,12 @@
+{
+    "Payload": {
+        "aggregateId": "c294d351-e1b1-4940-88bb-8ae36813e7c8",
+        "plateNumber": "B 1234 XXX",
+        "brand": "Honda",
+        "model": "Vario 160",
+        "type": "Scooter",
+        "tankCapacityLiter": 6.5,
+        "currentFuelCapacity": 4.3,
+        "transmission": "Automatic"
+    }
+}
