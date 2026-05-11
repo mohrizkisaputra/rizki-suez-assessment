@@ -17,9 +17,10 @@ import {
 
   OrchestratorServices
 } from '@shared';
-import { MonitoringDashboardServices } from './services/monitoring-dashboard.services';
+import { MonitoringDashboardServices } from './services/monitoring-dashboard.services'; 
 import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail.model';
-
+import { MapServices } from './services/maps.service';
+import { DirectionModels } from './models/direction.model';
 @Component({
   selector: 'app-monitoring-dashboard',
   standalone: true,
@@ -41,12 +42,10 @@ import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail
 })
 export class MonitoringDashboardComponent implements OnInit, OnDestroy {
 
-  googleMapsLoad = false;
-  center: google.maps.LatLngLiteral = { lat: -6.2088, lng: 106.8456 }; 
-  zoom = 12;
-  
+  public googleMapsLoad = false;
+  public center: google.maps.LatLngLiteral = { lat: -6.2088, lng: 106.8456 }; 
+  public zoom = 12;
   public distanceInKm = 0;
-  private mapDirectionsServices = inject(MapDirectionsService);
   public directionsResults$: Observable<google.maps.DirectionsResult | undefined> | undefined;
   public directionsOptions: google.maps.DirectionsRendererOptions = {
     suppressPolylines: false,
@@ -58,8 +57,8 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
       icons: [] 
     },
   };
-  
-  routeSample: any;
+
+  routeSample: DirectionModels | undefined;
   motorCycleDetailInfo: MotorCycleDetailInfoModel | undefined;
   weightDetailsInfo: WeightDetailModel | undefined;
 
@@ -67,82 +66,36 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private services: MonitoringDashboardServices, 
-    private orchServices: OrchestratorServices) {}
+    private orchServices: OrchestratorServices,
+    private mapsServices: MapServices
+  ) {}
 
   async ngOnInit() {
-    try {
-      this.routeSample = await this.services.getSampleRoute();
-      const motorcycleData = await this.services.getMotorcycleDetailInfo();
-      const weightData = await this.services.getWheightDetailInfo();
+    const [motorcycleData, weightData] = await Promise.all([
+      this.services.getMotorcycleDetailInfo(),
+      this.services.getWheightDetailInfo(),
+    ]);
+    
+    this.motorCycleDetailInfo = motorcycleData.Payload;
+    this.weightDetailsInfo = weightData.Payload;
+    
+    await this.initMapsData()
 
-      this.motorCycleDetailInfo = motorcycleData.Payload;
-      this.weightDetailsInfo = weightData.Payload;
-      if (this.routeSample) this.initMapsRoutes();
-
-      await this.orchServices.initialize();
-      this.orchServices.start(response => {
-        this.snapshot = response;
-      });
-    } catch (err) {
-      console.log(err)
-    }
-
+    await this.orchServices.initialize();
+    this.orchServices.start(response => {
+      this.snapshot = response;
+    });
   }
 
   ngOnDestroy() {
     this.orchServices.stop();
   }
 
-  private async initMapsRoutes() {
-    const routeSampleValue = this.routeSample?.Payload;
-    const body: google.maps.DirectionsRequest = {
-      origin: { 
-        lat: routeSampleValue.StartingPoint.lat, 
-        lng: routeSampleValue.StartingPoint.long 
-      },
-      destination: { 
-        lat: routeSampleValue.DestinationPoint.lat, 
-        lng: routeSampleValue.DestinationPoint.long 
-      },
-      travelMode: google.maps.TravelMode.DRIVING,
-      drivingOptions: {
-        departureTime: new Date(),
-        trafficModel: google.maps.TrafficModel.BEST_GUESS
-      },
-      provideRouteAlternatives: true
-    };
-
-    this.directionsResults$ = await this.mapDirectionsServices.route(body).pipe(map(res => res.result));
-    this.distanceInKm = (await this.getEstDistance() ?? 0) / 1000;
-    console.log('this.distanceInKm', this.distanceInKm);
-  }
-
-  private async getEstDistance() {
-    const { RouteMatrix } = await google.maps.importLibrary("routes");
-    const request = {
-      origins: [{ 
-        location: { 
-          lat: this.routeSample?.Payload?.StartingPoint?.lat, 
-          lng: this.routeSample?.Payload.StartingPoint.long 
-        } 
-      }],
-      destinations: [{ 
-        location: { 
-          lat: this.routeSample?.Payload?.DestinationPoint?.lat, 
-          lng: this.routeSample?.Payload?.DestinationPoint?.long
-        } 
-      }],
-      travelMode: google.maps.TravelMode.TWO_WHEELER,
-      fields: ['distanceMeters'], 
-    };
-
-    try {
-      const response = await RouteMatrix.computeRouteMatrix(request);
-      return response.matrix.rows[0].items[0].distanceMeters;
-    } catch (e) {
-      console.error("Gagal menghitung jarak:", e);
-      return 0
+  private async initMapsData() {
+    this.routeSample = await this.mapsServices.getSampleRoute();
+    if (this.routeSample) {
+      this.directionsResults$ = this.mapsServices.getMapsDirection(this.routeSample);
+      this.distanceInKm = (await this.mapsServices.getDistanceM(this.routeSample) ?? 0) / 1000;
     }
   }
-  
 }

@@ -6,12 +6,7 @@ import { firstValueFrom } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class MonitoringDashboardServices {
     constructor(private http: HttpClient) {}
-
-    async getSampleRoute(): Promise<any> {
-        const response = this.http.get('data/mapsDirection.json');
-        return await firstValueFrom(response);
-    }
-
+    
     async getMotorcycleDetailInfo(): Promise<any> {
         const response = this.http.get('data/motorcycleData.json');
         return await firstValueFrom(response);
