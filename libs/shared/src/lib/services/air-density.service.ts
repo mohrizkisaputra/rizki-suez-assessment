@@ -5,7 +5,6 @@ import { AirDensityModel } from '../models/air-density.model';
 
 @Injectable({ providedIn: 'root' })
 export class AirDensitySensorService {
-  private readonly path = 'libs/shared/src/lib/data/airDensityData.json';
   private data: AirDensityModel[] = [];
   private index = 0;
 

@@ -1,6 +1,7 @@
 // libs/shared/src/lib/services/sensor-stream.service.ts
 import { Injectable, OnDestroy } from '@angular/core';
 import { AirDensitySensorService } from './../services/air-density.service';
+import { ThrottlePositionServices } from './throttle-position.service';
 import { SnapshotDataModel } from './../models/snapshot.models';
 
 @Injectable({ providedIn: 'root' })
@@ -9,12 +10,14 @@ export class OrchestratorServices implements OnDestroy {
   private index = 0;
 
   constructor(
-    private airDensity: AirDensitySensorService
+    private airDensity: AirDensitySensorService,
+    private throttlePosition: ThrottlePositionServices
   ) {}
 
   async initialize(): Promise<void> {
     await Promise.all([
-      this.airDensity.getAirDensityDetailData()
+      this.airDensity.getAirDensityDetailData(),
+      this.throttlePosition.getThrottlePositionData()
     ]);
   }
 
@@ -37,6 +40,7 @@ export class OrchestratorServices implements OnDestroy {
   private emit(onSnapshot: (snapshot: SnapshotDataModel) => void): void {
     const snapshot: SnapshotDataModel = {
       airDensityData: this.airDensity.next(),
+      throttlePositionData: this.throttlePosition.next(),
       index: this.index++,
       recordedAt: new Date(),
     };
