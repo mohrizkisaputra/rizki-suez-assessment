@@ -1,10 +1,10 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common'
-import { GoogleMapsModule, MapDirectionsService  } from '@angular/google-maps';
+import { GoogleMapsModule  } from '@angular/google-maps';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { DividerModule } from 'primeng/divider';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { 
   AirDensityWidgetComponent,
   AvgThrottleWidgetComponent,
@@ -12,15 +12,16 @@ import {
   TirePressureWidgetComponent,
   WeightWidgetComponent,
 
+  MotorCycleDetailInfoModel,
   WeightDetailModel,
   SnapshotDataModel,
 
   OrchestratorServices
 } from '@shared';
-import { MonitoringDashboardServices } from './services/monitoring-dashboard.services'; 
-import { MotorCycleDetailInfoModel } from '../../domain/models/motorcycle-detail.model';
+import { MonitoringDashboardServices } from './services/monitoring-dashboard.services';
 import { MapServices } from './services/maps.service';
 import { DirectionModels } from './models/direction.model';
+
 @Component({
   selector: 'app-monitoring-dashboard',
   standalone: true,
@@ -41,6 +42,7 @@ import { DirectionModels } from './models/direction.model';
   styleUrl: './monitoring-dashboard.component.css'
 })
 export class MonitoringDashboardComponent implements OnInit, OnDestroy {
+
 
   public googleMapsLoad = false;
   public center: google.maps.LatLngLiteral = { lat: -6.2088, lng: 106.8456 }; 
@@ -70,23 +72,31 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     private mapsServices: MapServices
   ) {}
 
+
+  
   async ngOnInit() {
     const [motorcycleData, weightData] = await Promise.all([
       this.services.getMotorcycleDetailInfo(),
-      this.services.getWheightDetailInfo(),
+      this.services.getWeightDetailInfo(),
     ]);
     
     this.motorCycleDetailInfo = motorcycleData.Payload;
     this.weightDetailsInfo = weightData.Payload;
     
     await this.initMapsData()
+    
+    if (!this.motorCycleDetailInfo || !this.weightDetailsInfo) {
+      console.error('Missing motorcycle or weight detail data');
+      return;
+    }
 
-    await this.orchServices.initialize();
+    await this.orchServices.initialize(this.weightDetailsInfo, this.motorCycleDetailInfo);
     this.orchServices.start(response => {
       this.snapshot = response;
+      console.log('this.snapshot', this.snapshot);
     });
   }
-
+  
   ngOnDestroy() {
     this.orchServices.stop();
   }
@@ -96,6 +106,7 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     if (this.routeSample) {
       this.directionsResults$ = this.mapsServices.getMapsDirection(this.routeSample);
       this.distanceInKm = (await this.mapsServices.getDistanceM(this.routeSample) ?? 0) / 1000;
+      console.log('this.distanceInKm', this.distanceInKm);
     }
   }
 }
