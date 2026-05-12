@@ -2,41 +2,87 @@
 
 ---
 
-# GOOGLE_API_KEY Access Permission
-Before run the web locally, please ask the GOOGLE_API_KEY by send an email to mohrizkisaa@gmail.com
+# Google Maps API Key Setup
+
+This project uses Google Maps integration which requires a valid Google Maps API key.
+
+## Request API Key Access
+
+Before running the application locally, please request the `GOOGLE_API_KEY` by contacting: mohrizkisaa@gmail.com
 
 ---
 
-# Project Structure
+# Environment Setup
 
+After obtaining the API key, create a `.env` file in the project root directory (same level as `angular.json` and `tsconfig.json`).
+
+Example structure:
+
+```text
+project-root/
+├── .env
+├── angular.json
+├── tsconfig.json
+```
+
+---
+
+# Environment Variable
+
+Add the following variable inside the `.env` file:
+
+```env
+NG_APP_GOOGLE_API_KEY=[YOUR_GOOGLE_API_KEY]
+```
+
+Example:
+
+```env
+NG_APP_GOOGLE_API_KEY=AIza...
+```
+
+---
+
+# Security Note
+
+The `.env` file is intentionally excluded from version control to protect sensitive API credentials.
+
+---
+
+## Project Structure
+
+```
 libs/ (shared components)
-├── shared/
-│   ├── src/
-│   |    ├── lib/
-│   |    |    ├── components/
-│   |    |    |     ├── air-density-widget/
-│   |    |    |     ├── avg-throttle-widget/
-│   |    |    |     ├── fuel-consumption-widget/
-│   |    |    |     ├── motorcycle-detail-info/
-│   |    |    |     ├── speed-widget/
-│   |    |    |     ├── tire-pressure-widget/
-│   |    |    |     ├── weight-widget/   
-│   |    |    ├── data/
-│   |    |    ├── layout/
-│   |    |    |     ├── app-header/   
-│   |    |    ├── models/
-│   |    |    ├── services/
+└── shared/
+    └── src/
+        └── lib/
+            ├── components/
+            │   ├── air-density-widget/
+            │   ├── avg-throttle-widget/
+            │   ├── fuel-consumption-widget/
+            │   ├── motorcycle-detail-info/
+            │   ├── speed-widget/
+            │   ├── tire-pressure-widget/
+            │   └── weight-widget/
+            ├── data/
+            ├── layout/
+            │   └── app-header/
+            ├── models/
+            └── services/
+
 public/ (assets)
 ├── brand/
 ├── motorcycle-type/
-├── person/
-src/ (main components)
-├── app/ 
-|   ├── features/ 
-|   |    ├── monitoring-dashboard/
-|   |    |    ├── models/
-|   |    |    ├── services/
+└── person/
 
+src/ (main components)
+└── app/
+    └── features/
+        └── monitoring-dashboard/
+            ├── models/
+            └── services/
+
+```
 ---
 
 # Architecture & Design Decisions
@@ -69,13 +115,14 @@ Anime.js was used to enhance user experience through subtle dashboard animations
 
 ## Install Dependencies
 
-npm install
+`npm install`
 
 ## Build Shared Components
-First. Run `ng build shared` shared to build the shared components. 
+First. Run `ng build shared` to build the shared components. 
+
 
 ## Run locally
-ng s / ng serve
+`ng s` / `ng serve`
 
 ## Run Development 
 http://localhost:4200 

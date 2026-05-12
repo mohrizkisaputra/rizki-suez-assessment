@@ -104,7 +104,6 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     if (this.routeSample) {
       this.directionsResults$ = this.mapsServices.getMapsDirection(this.routeSample);
       this.distanceInKm = (await this.mapsServices.getDistanceM(this.routeSample) ?? 0) / 1000;
-      console.log('this.distanceInKm', this.distanceInKm);
     }
   }
 
