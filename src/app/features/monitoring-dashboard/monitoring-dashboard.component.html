@@ -3,7 +3,7 @@
 <p-divider />
 <div class="grid">
     <div class="col flex justify-content-center align-items-center">
-        <lib-air-density-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.airDensityData"></lib-air-density-widget>
+        <lib-air-density-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.airDensityData" (warningStatus)="warningHandler($event)"></lib-air-density-widget>
     </div>
     <div class="col flex justify-content-center align-items-center">
         <lib-avg-throttle-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.throttlePositionData"></lib-avg-throttle-widget>
@@ -12,7 +12,7 @@
         <lib-speed-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.speedData"></lib-speed-widget>
     </div>
     <div class="col flex justify-content-center align-items-center">
-        <lib-tire-pressure-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.tirePressureData"></lib-tire-pressure-widget>
+        <lib-tire-pressure-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.tirePressureData" (warningStatus)="warningHandler($event)"></lib-tire-pressure-widget>
     </div>
     <div class="col flex justify-content-center align-items-center">
         <lib-weight-widget class="flex items-center justify-center w-full h-full" [data]="weightDetailsInfo"></lib-weight-widget>
@@ -37,3 +37,16 @@
         <lib-fuel-consumption-widget class="flex items-center justify-center w-full h-full" [distance]="distanceInKm" [data]="this.snapshot?.fuelEconomyResult"></lib-fuel-consumption-widget>
     </div>
 </div>
+
+<p-dialog [(visible)]="showWarningDialog" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false" [showHeader]="false" [style]="{ width: '22rem', borderRadius: '16px', overflow: 'hidden' }">
+  <div class="warning-dialog">
+    <div class="icon-wrap">
+      <div class="icon-ring">
+        <img [src]="alertWarningIcon + '.svg'" class="alert-icon" alt="Warning icon"/>
+      </div>
+    </div>
+    <p class="alert-message">{{ alertWarning?.message }}</p>
+    <button class="dismiss-btn" (click)="showWarningDialog = false"> Dismiss </button>
+
+  </div>
+</p-dialog>

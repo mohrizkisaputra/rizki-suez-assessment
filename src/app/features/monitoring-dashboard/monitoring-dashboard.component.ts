@@ -4,6 +4,7 @@ import { GoogleMapsModule  } from '@angular/google-maps';
 import { CardModule } from 'primeng/card';
 import { SplitterModule } from 'primeng/splitter';
 import { DividerModule } from 'primeng/divider';
+import { DialogModule } from 'primeng/dialog';
 import { Observable } from 'rxjs';
 import { 
   AirDensityWidgetComponent,
@@ -17,6 +18,7 @@ import {
   MotorCycleDetailInfoModel,
   WeightDetailModel,
   SnapshotDataModel,
+  MonitoringAlert,
 
   OrchestratorServices
 } from '@shared';
@@ -32,6 +34,8 @@ import { DirectionModels } from './models/direction.model';
     CardModule, 
     SplitterModule,
     DividerModule,
+    DialogModule,
+
     AirDensityWidgetComponent,
     AvgThrottleWidgetComponent,
     SpeedWidgetComponent,
@@ -39,6 +43,7 @@ import { DirectionModels } from './models/direction.model';
     WeightWidgetComponent,
     FuelConsumptionWidgetComponent,
     MotorcycleDetailInfoComponent,
+
     AsyncPipe,
     CommonModule
   ],
@@ -65,8 +70,11 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
   routeSample: DirectionModels | undefined;
   motorCycleDetailInfo: MotorCycleDetailInfoModel | undefined;
   weightDetailsInfo: WeightDetailModel | undefined;
+  alertWarning: MonitoringAlert |undefined;
+  alertWarningIcon: string | undefined;
 
   snapshot: SnapshotDataModel | null = null;
+  showWarningDialog = false;
 
   constructor(
     private services: MonitoringDashboardServices, 
@@ -110,5 +118,18 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     this.orchServices.start(response => {
       this.snapshot = response;
     });
+  }
+
+  public warningHandler(event: any) {
+    if (!event) return;
+    this.alertWarning = event;
+    
+    if (event.type == 'temperature'){
+      if (event.status == 'critical') this.showWarningDialog = true;
+      this.alertWarningIcon = 'air-temperature';
+    } else if (event.type == 'tire-pressure'){
+      if (event.status !== 'normal') this.showWarningDialog = true;
+      this.alertWarningIcon = 'tire-pressure';
+    } 
   }
 }

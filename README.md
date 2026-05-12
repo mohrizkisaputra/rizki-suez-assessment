@@ -8,6 +8,7 @@ Before run the web locally, please ask the GOOGLE_API_KEY by send an email to mo
 ---
 
 # Project Structure
+
 libs/ (shared components)
 ├── shared/
 │   ├── src/

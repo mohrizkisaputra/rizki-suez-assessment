@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { TirePressureModel } from '../../models/tire-pressure.model';
 import { animate } from 'animejs';
+import { MonitoringRulesService } from '../../services/alert.services';
 
 @Component({
   selector: 'lib-tire-pressure-widget',
@@ -13,6 +14,8 @@ import { animate } from 'animejs';
 export class TirePressureWidgetComponent implements AfterViewInit, OnChanges{
   
   @Input() data: TirePressureModel | undefined;
+  @Output() warningStatus = new EventEmitter<any>();
+  
   @ViewChild('tireIcon')
   tireIcon!: ElementRef;
 
@@ -20,6 +23,8 @@ export class TirePressureWidgetComponent implements AfterViewInit, OnChanges{
   public rearColor = '#22c55e';
   public pressureColor = '#22c55e';
   private initialized = false;
+
+  constructor(private monitoringRulesService: MonitoringRulesService) {}
   
   ngAfterViewInit(): void {
     this.initialized = true;
@@ -30,6 +35,10 @@ export class TirePressureWidgetComponent implements AfterViewInit, OnChanges{
     if (changes['data'] && this.initialized) {
       this.updatePressureState();
       this.animateWarning();
+
+      if(!this.data?.frontPsi || !this.data?.rearPsi) return;
+      const alertTirePressure = this.monitoringRulesService.createTirePressureAlert(this.data?.frontPsi, this.data?.rearPsi);
+      if(alertTirePressure?.status !== 'normal') this.warningStatus.emit(alertTirePressure);
     }
   }
 
