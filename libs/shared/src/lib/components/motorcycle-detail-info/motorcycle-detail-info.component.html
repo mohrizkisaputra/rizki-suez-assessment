@@ -1,1 +1,47 @@
-<p>motorcycle-detail-info works!</p>
+<div class="grid">
+    <div class="col-12 md:col-4 flex">
+        <p-card class="info-card w-full">
+            <div class="info-container">
+                <div class="icon-wrapper bike">
+                    <img src="motorcycle-type/scooter.svg" class="info-icon" alt="Motorcycle Type" />
+                </div>
+                <div class="info-content">
+                    <div class="info-label"> Motorcycle </div>
+                    <div class="info-value"> {{ data?.type }} </div>
+                    <div class="info-sub"> {{ data?.transmission }} </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+    <div class="col-12 md:col-4 flex">
+        <p-card class="info-card w-full">
+            <div class="info-container">
+                <div class="icon-wrapper fuel">
+                    <img src="fuel-jug.svg" class="info-icon" alt="Fuel Capacity"/>
+                </div>
+                <div class="info-content">
+                    <div class="info-label"> Fuel </div>
+                    <div class="info-value"> {{ data?.tankCapacityLiter }} L </div>
+                    <div class="info-sub"> Current: {{ data?.currentFuelCapacity }} L </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+
+    <div class="col-12 md:col-4 flex">
+        <p-card class="info-card w-full">
+            <div class="info-container">
+                <div class="icon-wrapper brand">
+                    <img src="brand/{{data?.brand?.toLocaleLowerCase()}}.svg" class="info-icon" alt="Brand"/>
+                </div>
+                <div class="info-content">
+                    <div class="info-label">
+                        Brand
+                    </div>
+                    <div class="info-value"> {{ data?.brand }} </div>
+                    <div class="info-sub"> {{ data?.model }} </div>
+                </div>
+            </div>
+        </p-card>
+    </div>
+</div>

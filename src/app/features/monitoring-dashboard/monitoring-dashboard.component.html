@@ -1,49 +1,4 @@
-
-
-<div class="grid ">
-    <div class="col" >
-        <p-card class="">
-            <div class="grid ">
-                <div class="col flex justify-content-left align-items-center">
-                    <img src="motor-scooter-svgrepo-com.svg" class="w-8rem" alt="Motorcycle Type"/>
-                </div>
-                <div class="col flex justify-content-left align-items-center">
-                    Type 
-                    {{motorCycleDetailInfo?.type}}
-                    {{motorCycleDetailInfo?.transmission}}
-                </div>
-            </div>
-        </p-card>
-    </div>
-    <div class="col">
-        <p-card class="">
-            <div class="grid ">
-                <div class="col flex justify-content-left align-items-center">
-                    <img src="fuel-svgrepo-com.svg" class="w-8rem" alt="Fuel Capacity"/>
-                </div>
-                <div class="col flex justify-content-left align-items-center">
-                    Fuel Capacity
-                    {{motorCycleDetailInfo?.tankCapacityLiter}}
-                    Current Fuel Capacity
-                    {{motorCycleDetailInfo?.currentFuelCapacity}}
-                </div>
-            </div>
-        </p-card>
-    </div>
-    <div class="col">
-        <p-card class="">
-            <div class="grid ">
-                <div class="col flex justify-content-left align-items-center">
-                    <img src="brand/{{motorCycleDetailInfo?.brand?.toLocaleLowerCase()}}.svg" class="w-8rem" alt="Fuel Capacity"/>
-                </div>
-                <div class="col flex justify-content-left align-items-center">
-                    {{motorCycleDetailInfo?.brand}}
-                    {{motorCycleDetailInfo?.model}}
-                </div>
-            </div>
-        </p-card>
-    </div>
-</div>
+<lib-motorcycle-detail-info [data]="motorCycleDetailInfo"></lib-motorcycle-detail-info>
 
 <p-divider />
 <div class="grid">
@@ -60,34 +15,25 @@
         <lib-tire-pressure-widget class="flex items-center justify-center w-full h-full" [data]="snapshot?.tirePressureData"></lib-tire-pressure-widget>
     </div>
     <div class="col flex justify-content-center align-items-center">
-        <!-- <lib-weight-widget class="flex items-center justify-center h-1/6" [data]="weightDetailsInfo"></lib-weight-widget> -->
-        <p-card class="p-2 w-full">
-            <div class="grid">
-                <div class="col flex justify-content-left align-items-center">
-                    <img src="person/{{weightDetailsInfo?.person}}-person.svg" class="w-8rem" alt="Fuel Capacity"/>
-                </div>
-                <div class="col flex justify-content-left align-items-center">
-                    <div>
-                        <div>Total Person {{weightDetailsInfo?.person}}</div>
-                        <div>Person Weight {{weightDetailsInfo?.totalPersonKg}}</div>
-                        <div>Laguage Weight {{weightDetailsInfo?.cargoKg}}</div>
-                    </div>
-                </div>
-            </div>
-        </p-card>
+        <lib-weight-widget class="flex items-center justify-center w-full h-full" [data]="weightDetailsInfo"></lib-weight-widget>
     </div>
 </div>
 <p-divider />
 
-<p-card>
-    <!-- @if (googleMapsLoad | async) {  -->
-        <google-map height="500px" width="70%" 
-            [center]="center" 
-            [zoom]="zoom">
-            @if (directionsResults$ | async; as directionsResults) {
-                <map-directions-renderer [directions]="directionsResults" [options]="directionsOptions"></map-directions-renderer>
-            }
-        </google-map>
-    <!-- } -->
-    
-</p-card>
+<div class="grid">
+    <div class="col-9">
+        <p-card class="map-card">
+            <google-map height="500px" width="100%" [center]="center" [zoom]="zoom">
+                @if (directionsResults$ | async; as directionsResults) {
+                <map-directions-renderer 
+                    [directions]="directionsResults" 
+                    [options]="directionsOptions">
+                </map-directions-renderer>
+                }
+            </google-map>
+        </p-card>
+    </div>
+    <div class="col flex justify-content-center align-items-center">
+        <lib-fuel-consumption-widget class="flex items-center justify-center w-full h-full" [distance]="distanceInKm" [data]="this.snapshot?.fuelEconomyResult"></lib-fuel-consumption-widget>
+    </div>
+</div>

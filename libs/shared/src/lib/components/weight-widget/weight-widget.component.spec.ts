@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WeightWidgetComponent } from './weight-widget.component';
+import WeightWidgetComponent from './weight-widget.component';
 
 describe('WeightWidgetComponent', () => {
   let component: WeightWidgetComponent;

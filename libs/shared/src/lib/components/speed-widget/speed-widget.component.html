@@ -1,13 +1,11 @@
-<p-card class="p-2 h-10rem">
-    <div class="grid">
-        <div class="col flex justify-content-left align-items-center">
-             <div>
-                <div>RPM {{data?.rpm}}</div>
-                <div>Speed {{data?.speedKmh}} Km/h</div>
-            </div>
+<p-card class="rpm-card w-full overflow-hidden">
+    <div class="speed-container">
+        <div #kmhValue class="kmh-value" [style.color]="speedColor">
+            {{ data?.speedKmh }}
         </div>
-        <div class="col flex justify-content-left align-items-center">
-            <div>result</div>
-        </div>
+        <div class="rpm-unit"> Km/h </div>
+
+        <div #rpmValue class="rpm-value mt-"> {{ data?.rpm }} rev/min </div>
     </div>
+
 </p-card>

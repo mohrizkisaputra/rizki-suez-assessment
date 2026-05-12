@@ -1,0 +1,84 @@
+:host {
+    display: flex;
+    width: 100%;
+    --p-card-body-padding: 1.0rem
+}
+
+.tire-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 28px;
+    background: linear-gradient(
+            135deg,
+            rgba(15,15,25,0.98),
+            rgba(30,30,45,0.98)
+        );
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+    overflow: hidden;
+}
+
+.tire-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
+}
+
+.tire-title {
+    font-family: Inter, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 1rem;
+}
+
+.tire-icon-wrapper {
+    transition: color 1000ms ease;
+}
+
+.tire-icon {
+    width: 100px;
+    filter: drop-shadow(0 0 12px currentColor);
+}
+
+.pressure-box {
+    padding: 1rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.pressure-box:hover {
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.08);
+}
+
+.pressure-label {
+    font-family: Inter, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 0.75rem;
+}
+
+.pressure-value {
+    font-family: Inter, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    transition: color 1000ms ease;
+    text-shadow: 0 0 14px currentColor;
+}
+
+.pressure-unit {
+    margin-top: 0.5rem;
+    font-family: Inter, sans-serif;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.45);
+}

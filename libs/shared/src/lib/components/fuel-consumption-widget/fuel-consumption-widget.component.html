@@ -1,1 +1,74 @@
-<p>fuel-consumption-widget works!</p>
+<p-card class="widget-card">
+    <div class="widget-header">
+        <p class="widget-title">Fuel economy</p>
+    </div>
+
+    <div class="grid mb-2">
+        <div class="col-6">
+            <div class="mini-stat">
+                <p class="mini-label">Economy</p>
+                <p class="mini-val economy">
+                {{ data?.economyKml ?? '—' }} <span class="unit">km/L</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mini-stat">
+                <p class="mini-label">Consumption</p>
+                <p class="mini-val consumption">
+                    {{ data?.consumptionL100km ?? '—' }} <span class="unit">L/100km</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mini-stat">
+                <p class="mini-label">Max range</p>
+                <p class="mini-val range">
+                    {{ data?.maxRangeKm ?? '—' }} <span class="unit">km</span>
+                </p>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="mini-stat">
+                <p class="mini-label">Fuel needed</p>
+                <p class="mini-val" [class.sufficient]="canComplete" [class.insufficient]="!canComplete">
+                    {{ data?.fuelNeededLiter ?? '—' }} <span class="unit">L</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="trip-section">
+        <div class="trip-header">
+            <span class="trip-label">Trip · {{ distance }} km</span>
+            <span class="badge" [class.badge-success]="canComplete" [class.badge-danger]="!canComplete">
+                {{ badgeLabel }}
+            </span>
+        </div>
+        <div class="range-track">
+            <div #rangeBar class="range-fill" [class.fill-success]="canComplete" [class.fill-warning]="!canComplete"></div>
+        </div>
+        <div class="trip-footer">
+            <span>0</span>
+            <span class="trip-status" [class.status-ok]="canComplete" [class.status-warn]="!canComplete">
+                @if (canComplete) { Sufficient } @else { -{{ data?.fuelShortageL }}L }
+            </span>
+            <span>{{ distance }}km</span>
+        </div>
+    </div>
+
+    <div class="factors-section">
+        <p class="factors-title">Factors</p>
+        @for (f of factors; track f.label) {
+            <div class="factor-row">
+                <span class="factor-key">{{ f.label }}</span>
+                <div class="factor-bar-track">
+                    <div class="factor-bar" [class.bar-ok]="f.val <= 1.1" [class.bar-warn]="f.val > 1.1 && f.val <= 1.2" [class.bar-bad]="f.val > 1.2"[style.width.%]="factorBarWidth(f.val)"></div>
+                </div>
+                <span class="factor-val" [class.val-ok]="f.val <= 1.1" [class.val-warn]="f.val > 1.1 && f.val <= 1.2" [class.val-bad]="f.val > 1.2">
+                    {{ f.val.toFixed(2) }}x
+                </span>
+            </div>
+        }
+    </div>
+</p-card>

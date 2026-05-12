@@ -1,0 +1,10 @@
+.map-card {
+  display: block;
+  height: 520px;
+}
+
+.map-card ::ng-deep .p-card-body,
+.map-card ::ng-deep .p-card-content {
+  padding: 0;
+  height: 100%;
+}

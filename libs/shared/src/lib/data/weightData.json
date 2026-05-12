@@ -1,6 +1,6 @@
 {
     "Payload": {
-        "aggregateId": "",
+        "aggregateId": "1a2b3c4d-5e6f-7081-92a3-b4c5d6e7f8g9",
         "person": 2,
         "totalPersonKg": 126,
         "cargoKg": 6.2

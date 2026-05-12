@@ -1,4 +1,4 @@
-<p-card class="p-2 h-10rem">
+<!-- <p-card class="p-2 h-10rem">
     <div class="grid">
         <div class="col flex justify-content-left align-items-center">
              <div>
@@ -10,4 +10,50 @@
             <div>result</div>
         </div>
     </div>
+</p-card> -->
+
+<p-card class="tire-card w-full overflow-hidden">
+    <div class="tire-container"> 
+        <div class="tire-icon-wrapper" [style.color]="pressureColor" >
+            <img #tireIcon src="tire-pressure.svg" class="tire-icon" alt="Tire Pressure" />
+        </div>
+        <div class="grid w-full mt-4">
+            <div class="col-6">
+                <div class="pressure-box">
+                    <div class="pressure-label">
+                        FRONT
+                    </div>
+                    <div
+                        class="pressure-value"
+                        [style.color]="frontColor"
+                    >
+                        {{ data?.frontPsi }}
+                    </div>
+
+                    <div class="pressure-unit">
+                        PSI
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="pressure-box">
+                    <div class="pressure-label"> 
+                        REAR 
+                    </div>
+                    <div class="pressure-value" [style.color]="rearColor">
+                        {{ data?.rearPsi }}
+                    </div>
+                    <div class="pressure-unit">
+                        PSI
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </p-card>
+
+
+
+
+
+            <!-- Rear -->

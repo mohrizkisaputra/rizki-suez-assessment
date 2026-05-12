@@ -1,14 +1,25 @@
-<p-card class="p-2 h-10rem">
-    <div class="grid">
-        <div class="col flex justify-content-left align-items-center">
-             <div>
-                <div>Temperature {{data?.temperatureCelsius}}</div>
-                <div>Humidity {{data?.humidityPct}}</div>
-                <div>Air Pressure {{data?.pressureHpa}}</div>
+<p-card class="weather-card w-full overflow-hidden h-full">
+    <div class="grid align-items-center">
+        <div class="col-12 md:col-4 flex justify-content-center">
+            <div class="thermo-wrapper">
+                <img #thermoIcon src="air-temperature.svg" class="thermo-icon" alt="Air Temperature" />
             </div>
         </div>
-        <div class="col flex justify-content-left align-items-center">
-            <div>result</div>
+        <div class="col-12 md:col-8">
+            <div class="metric-list">
+                <div class="metric-item temp">
+                    <div class="metric-label"> Air Intake Temperature </div>
+                    <div class="metric-value"> {{ data?.temperatureCelsius }}°C </div>
+                </div>
+                <div class="metric-item humidity">
+                    <div class="metric-label"> Humidity </div>
+                    <div class="metric-value"> {{ data?.humidityPct }}% </div>
+                </div>
+                <div class="metric-item pressure">
+                    <div class="metric-label"> Air Pressure </div>
+                    <div class="metric-value"> {{ data?.pressureHpa }} hPa </div>
+                </div>
+            </div>
         </div>
     </div>
 </p-card>

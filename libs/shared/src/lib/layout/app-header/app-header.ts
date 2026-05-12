@@ -13,9 +13,5 @@ import { CardModule } from 'primeng/card';
 export class AppHeader {
   headerItems: MenuItem[] | undefined;
 
-  ngOnInit() {
-    // this.headerItems = [
-
-    // ]
-  }
+  ngOnInit() {}
 }

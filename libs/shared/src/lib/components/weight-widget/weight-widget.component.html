@@ -1,4 +1,4 @@
-<p-card class="p-2 h-10rem">
+<!-- <p-card class="p-2 h-10rem">
     <div class="grid">
         <div class="col flex justify-content-left align-items-center">
             <img src="person/{{data?.person}}-person.svg" class="w-8rem" alt="Fuel Capacity"/>
@@ -11,4 +11,74 @@
             </div>
         </div>
     </div>
+</p-card> -->
+
+<p-card class="payload-card w-full overflow-hidden">
+
+    <div class="payload-container">
+        <!-- Person Icon -->
+         <div class="grid">
+            <div
+                class="col person-icon-wrapper"
+                [style.color]="payloadColor"
+            >
+
+                <img
+                    #personIcon
+                    [src]="'person/' + data?.person + '-person.svg'"
+                    class="person-icon"
+                    alt="Passenger"
+                />
+
+            </div>
+            <div class="flex items-center justify-center">
+                <div
+                    col
+                    #payloadValue
+                    class="payload-value "
+                    [style.color]="payloadColor"
+                >
+                    {{ totalWeight }}
+                    <div class="payload-unit">
+                        Total Weight (KG)
+                    </div>
+                </div>
+            </div>
+         </div>
+        
+
+        <!-- Main Weight -->
+        
+
+        <!-- Bottom Stats -->
+        <div class="payload-stats">
+
+            <div class="payload-stat">
+
+                <div class="stat-label">
+                    Riders
+                </div>
+
+                <div class="stat-value">
+                    {{ data?.person }}
+                </div>
+
+            </div>
+
+            <div class="payload-stat">
+
+                <div class="stat-label">
+                    Cargo
+                </div>
+
+                <div class="stat-value">
+                    {{ data?.cargoKg }} kg
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </p-card>

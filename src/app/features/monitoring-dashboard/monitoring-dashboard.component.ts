@@ -10,7 +10,9 @@ import {
   AvgThrottleWidgetComponent,
   SpeedWidgetComponent,
   TirePressureWidgetComponent,
+  FuelConsumptionWidgetComponent,
   WeightWidgetComponent,
+  MotorcycleDetailInfoComponent,
 
   MotorCycleDetailInfoModel,
   WeightDetailModel,
@@ -35,6 +37,8 @@ import { DirectionModels } from './models/direction.model';
     SpeedWidgetComponent,
     TirePressureWidgetComponent,
     WeightWidgetComponent,
+    FuelConsumptionWidgetComponent,
+    MotorcycleDetailInfoComponent,
     AsyncPipe,
     CommonModule
   ],
@@ -42,8 +46,6 @@ import { DirectionModels } from './models/direction.model';
   styleUrl: './monitoring-dashboard.component.css'
 })
 export class MonitoringDashboardComponent implements OnInit, OnDestroy {
-
-
   public googleMapsLoad = false;
   public center: google.maps.LatLngLiteral = { lat: -6.2088, lng: 106.8456 }; 
   public zoom = 12;
@@ -72,8 +74,6 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     private mapsServices: MapServices
   ) {}
 
-
-  
   async ngOnInit() {
     const [motorcycleData, weightData] = await Promise.all([
       this.services.getMotorcycleDetailInfo(),
@@ -83,18 +83,8 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
     this.motorCycleDetailInfo = motorcycleData.Payload;
     this.weightDetailsInfo = weightData.Payload;
     
-    await this.initMapsData()
-    
-    if (!this.motorCycleDetailInfo || !this.weightDetailsInfo) {
-      console.error('Missing motorcycle or weight detail data');
-      return;
-    }
-
-    await this.orchServices.initialize(this.weightDetailsInfo, this.motorCycleDetailInfo);
-    this.orchServices.start(response => {
-      this.snapshot = response;
-      console.log('this.snapshot', this.snapshot);
-    });
+    await this.initMapsData();
+    await this.initData();
   }
   
   ngOnDestroy() {
@@ -108,5 +98,17 @@ export class MonitoringDashboardComponent implements OnInit, OnDestroy {
       this.distanceInKm = (await this.mapsServices.getDistanceM(this.routeSample) ?? 0) / 1000;
       console.log('this.distanceInKm', this.distanceInKm);
     }
+  }
+
+  private async initData() {
+    if (!this.motorCycleDetailInfo || !this.weightDetailsInfo) {
+      console.error('Missing motorcycle or weight detail data');
+      return;
+    }
+
+    await this.orchServices.initialize(this.weightDetailsInfo, this.motorCycleDetailInfo, this.distanceInKm);
+    this.orchServices.start(response => {
+      this.snapshot = response;
+    });
   }
 }

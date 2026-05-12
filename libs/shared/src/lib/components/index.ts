@@ -4,3 +4,4 @@ export * from './avg-throttle-widget/avg-throttle-widget.component';
 export * from './air-density-widget/air-density-widget.component';
 export * from './fuel-consumption-widget/fuel-consumption-widget.component';
 export * from './weight-widget/weight-widget.component';
+export * from './motorcycle-detail-info/motorcycle-detail-info.component';
